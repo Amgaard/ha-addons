@@ -1,0 +1,25 @@
+name: LaraPaper (TRMNL)
+version: "1.0.0"
+slug: larapaper
+description: Selvhostet TRMNL-server (BYOS)
+url: https://github.com/usetrmnl/larapaper
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: application
+boot: auto
+ports:
+  8080/tcp: 4567
+ports_description:
+  8080/tcp: LaraPaper web + TRMNL API
+webui: http://[HOST]:[PORT:8080]
+environment:
+  DB_DATABASE: /data/database.sqlite
+  PHP_OPCACHE_ENABLE: "1"
+options:
+  app_url: "http://192.168.1.X:4567"
+  registration_enabled: true
+schema:
+  app_url: url
+  registration_enabled: bool
