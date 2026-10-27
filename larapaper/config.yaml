@@ -1,5 +1,5 @@
 name: LaraPaper (TRMNL)
-version: "1.0.1"
+version: "1.0.0"
 slug: larapaper
 description: Selvhostet TRMNL-server (BYOS)
 url: https://github.com/usetrmnl/larapaper
@@ -13,7 +13,6 @@ ports:
   8080/tcp: 4567
 ports_description:
   8080/tcp: LaraPaper web + TRMNL API
-homeassistant_api: true
 webui: http://[HOST]:[PORT:8080]
 environment:
   DB_DATABASE: /data/database.sqlite
