@@ -1,0 +1,48 @@
+name: aula-mcp (med billeder)
+version: "1.0.3-b1"
+slug: aula_mcp
+description: >-
+  MCP server for the Danish school platform Aula. Exposes aula.discover,
+  ugeplan, lektier, messages and more as MCP tools that HA's Assist
+  conversation agent (Anthropic / OpenAI / Ollama / etc.) can call —
+  including via Voice. Point HA's official `mcp` (client) integration
+  at http://homeassistant.local:7878/sse after install.
+url: "https://github.com/Casperjuel/aula-mcp"
+arch:
+  - amd64
+  - aarch64
+init: false
+boot: auto
+startup: services
+host_network: false
+ports:
+  7878/tcp: 7878
+ports_description:
+  7878/tcp: aula-mcp HTTP (/mcp) + SSE (/sse)
+map:
+  # IMPORTANT: with the modern `homeassistant_config` map type, Supervisor
+  # mounts HA's configuration directory at /homeassistant by default — NOT at
+  # /config (that default path is only used by the deprecated `config` map
+  # type). run.sh and the docs expect the tokens at /config/aula-mcp/, so pin
+  # the mount path explicitly. Since run.sh is baked into the image at build
+  # time, bump `version` above whenever this mapping changes, or Supervisor
+  # will keep the stale image.
+  - type: homeassistant_config
+    read_only: false
+    path: /config
+# In-addon login UI exposed via HA Ingress. The addon binds two ports:
+# - 7878 (above): MCP traffic, exposed to the LAN per `ports:`.
+# - 8099 (below): setup/login UI, only reachable through HA's Ingress proxy.
+#   `ingress_port` MUST stay in sync with AULA_MCP_INGRESS_PORT in run.sh.
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:school
+panel_title: aula-mcp
+options:
+  aula_mcp_key: ""
+  log: false
+  allow_remote: true
+schema:
+  aula_mcp_key: "password?"
+  log: bool
+  allow_remote: bool
